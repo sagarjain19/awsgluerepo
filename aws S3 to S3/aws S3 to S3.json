@@ -1,0 +1,39 @@
+{
+  "name" : "aws S3 to S3",
+  "description" : "",
+  "role" : "arn:aws:iam::193623819496:role/AWSGlueServiceRole",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-193623819496-us-east-1/scripts/awscopy.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-193623819496-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-enable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-193623819496-us-east-1/temporary/"
+  },
+  "maxRetries" : 3,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "3.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://myawsbucket1010/curated/input/sampldata5.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"S3 bucket\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"StudentName\",\"Type\":\"string\"},{\"Name\":\"FathersName\",\"Type\":\"string\"},{\"Name\":\"PhoneNumber\",\"Type\":\"bigint\"},{\"Name\":\"Account ID\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://myawsbucket1010/curated/input/sampldata5.csv\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}},\"node-2\":{\"ApplyMapping\":{\"Inputs\":[\"node-1\"],\"Mapping\":[{\"Dropped\":false,\"FromPath\":[\"StudentName\"],\"FromType\":\"string\",\"ToKey\":\"StudentName\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"FathersName\"],\"FromType\":\"string\",\"ToKey\":\"FathersName\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"PhoneNumber\"],\"FromType\":\"bigint\",\"ToKey\":\"PhoneNumber\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"Account ID\"],\"FromType\":\"string\",\"ToKey\":\"Account ID\",\"ToType\":\"string\"}],\"Name\":\"ApplyMapping\"}},\"node-3\":{\"S3DirectTarget\":{\"Compression\":\"none\",\"Format\":\"csv\",\"Inputs\":[\"node-2\"],\"Name\":\"S3 bucket\",\"PartitionKeys\":[],\"Path\":\"s3://myawsbucket1010/curated/output/\",\"SchemaChangePolicy\":{\"EnableUpdateCatalog\":false}}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "awsgluerepo",
+    "branch" : "master",
+    "folder" : "aws S3 to S3"
+  }
+}
